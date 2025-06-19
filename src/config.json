@@ -1,0 +1,5 @@
+{
+  "PRINTER_HOST": "",
+  "PRINTER_PORT": null,
+  "POLL_INTERVAL": 5000
+}
