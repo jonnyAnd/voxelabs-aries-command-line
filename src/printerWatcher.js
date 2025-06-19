@@ -9,6 +9,12 @@ const CMD_GET_PRINT_STATUS = '~M27\n';
 const CMD_GET_ENDSTOP_STATUS = '~M119\n';
 const POLL_COMMANDS = [CMD_GET_TEMP, CMD_GET_PRINT_STATUS, CMD_GET_ENDSTOP_STATUS];
 
+const RESPONSE_TEMP_PREFIX = 'T0:';
+const RESPONSE_ENDSTOP_PREFIX = 'Endstop';
+const RESPONSE_SD_PRINTING_PREFIX = 'SD printing byte';
+const RESPONSE_STATUS_PREFIX = 'MachineStatus';
+const RESPONSE_MOVEMODE_PREFIX = 'MoveMode';
+
 class PrinterWatcher {
     constructor(host, port, pollInterval, logFile = 'printer_raw.log') {
         this.host = host;
@@ -80,7 +86,7 @@ class PrinterWatcher {
         const parsed = {};
 
         for (const line of lines) {
-            if (line.startsWith('T0:')) {
+            if (line.startsWith(RESPONSE_TEMP_PREFIX)) {
                 const m = line.match(/T0:(\d+) \/(\d+)\s+B:(\d+)\/(\d+)/);
                 if (m) Object.assign(parsed, {
                     nozzleTemp: +m[1],
@@ -88,7 +94,7 @@ class PrinterWatcher {
                     bedTemp: +m[3],
                     bedTargetTemp: +m[4]
                 });
-            } else if (line.startsWith('Endstop')) {
+            } else if (line.startsWith(RESPONSE_ENDSTOP_PREFIX)) {
                 const parts = line.split(/\s+/);
                 parts.slice(1).forEach(p => {
                     const [axis, state] = p.split(':');
@@ -96,15 +102,15 @@ class PrinterWatcher {
                     if (axis === 'Y-max') parsed.endstopY = +state;
                     if (axis === 'Z-max') parsed.endstopZ = +state;
                 });
-            } else if (line.startsWith('SD printing byte')) {
+            } else if (line.startsWith(RESPONSE_SD_PRINTING_PREFIX)) {
                 const m = line.match(/SD printing byte (\d+)\/(\d+)/);
                 if (m) Object.assign(parsed, {
                     sdBytesPrinted: +m[1],
                     sdBytesTotal: +m[2]
                 });
-            } else if (line.startsWith('MachineStatus')) {
+            } else if (line.startsWith(RESPONSE_STATUS_PREFIX)) {
                 parsed.status = line.split(':')[1].trim();
-            } else if (line.startsWith('MoveMode')) {
+            } else if (line.startsWith(RESPONSE_MOVEMODE_PREFIX)) {
                 parsed.moveMode = line.split(':')[1].trim();
             }
         }

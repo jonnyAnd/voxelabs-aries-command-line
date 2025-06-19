@@ -223,3 +223,6 @@ MachineStatus: BUILDING_FROM_SD
 MoveMode: MOVING
 Status: S:0 L:0 J:0 F:0
 
+[2025-06-19T00:39:20.640Z] CMD M105 Received.
+T0:244 /245 B:84/85
+
