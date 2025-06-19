@@ -22,6 +22,7 @@ Options:
   --host <hostname>   Override printer hostname or IP address
   --port <number>     Override printer port
   --apiport <number>  Override HTTP server port for /status endpoint
+  --silent            Disable print status logs to console
 `);
 }
 
@@ -73,6 +74,10 @@ function parseArguments() {
                 } else {
                     console.warn('⚠️ --apiport flag requires a numeric value');
                 }
+                break;
+            }
+            case '--silent': {
+                options.silent = true;
                 break;
             }
             default:
@@ -134,7 +139,7 @@ function start() {
         const port = options.portOverride || config.PRINTER_PORT;
         const apiPort = options.apiPortOverride || 1337;
 
-        const watcher = new PrinterWatcher(host, port, pollInterval);
+        const watcher = new PrinterWatcher(host, port, pollInterval, options.silent);
         watcher.start();
 
         const server = new PrinterServer(watcher.printer, apiPort);

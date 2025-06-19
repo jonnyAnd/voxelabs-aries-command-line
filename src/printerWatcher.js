@@ -16,10 +16,11 @@ const RESPONSE_STATUS_PREFIX = 'MachineStatus';
 const RESPONSE_MOVEMODE_PREFIX = 'MoveMode';
 
 class PrinterWatcher {
-    constructor(host, port, pollInterval, logFile = 'printer_raw.log') {
+    constructor(host, port, pollInterval, silent = false, logFile = 'printer_raw.log') {
         this.host = host;
         this.port = port;
         this.pollInterval = pollInterval;
+        this.silent = silent;
         this.commands = POLL_COMMANDS;
         this.pollIndex = 0;
         this.buffer = '';
@@ -31,7 +32,7 @@ class PrinterWatcher {
     start() {
         this.client = new net.Socket();
         this.client.connect(this.port, this.host, () => {
-            console.log(`✅ Connected to printer at ${this.host}:${this.port}`);
+            if (!this.silent) console.log(`✅ Connected to printer at ${this.host}:${this.port}`);
             this.startPolling();
         });
 
@@ -50,7 +51,7 @@ class PrinterWatcher {
 
     sendCommand(command) {
         if (this.client && !this.client.destroyed) {
-            console.log(`📤 Sending: ${command.trim()}`);
+            if (!this.silent) console.log(`📤 Sending: ${command.trim()}`);
             this.client.write(command);
         } else {
             console.warn('⚠️ Cannot send command, client not connected');
@@ -69,7 +70,7 @@ class PrinterWatcher {
 
             const parsed = this.parseResponse(cleanResponse);
             this.printer.updateFromParsedData(parsed);
-            this.printer.printStatus();
+            if (!this.silent) this.printer.printStatus();
         }
     }
 
