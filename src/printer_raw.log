@@ -301,3 +301,30 @@ MachineStatus: BUILDING_FROM_SD
 MoveMode: MOVING
 Status: S:0 L:0 J:0 F:0
 
+[2025-06-19T01:05:48.688Z] CMD M105 Received.
+T0:244 /245 B:85/85
+
+[2025-06-19T01:05:53.793Z] CMD M27 Received.
+SD printing byte 59/100
+
+[2025-06-19T01:05:58.706Z] CMD M119 Received.
+Endstop: X-max:0 Y-max:0 Z-max:0
+MachineStatus: BUILDING_FROM_SD
+MoveMode: MOVING
+Status: S:0 L:0 J:0 F:0
+
+[2025-06-19T01:06:03.829Z] CMD M105 Received.
+T0:244 /245 B:84/85
+
+[2025-06-19T01:06:17.957Z] CMD M105 Received.
+T0:244 /245 B:85/85
+
+[2025-06-19T01:06:22.971Z] CMD M27 Received.
+SD printing byte 59/100
+
+[2025-06-19T01:06:27.889Z] CMD M119 Received.
+Endstop: X-max:0 Y-max:0 Z-max:0
+MachineStatus: BUILDING_FROM_SD
+MoveMode: MOVING
+Status: S:0 L:0 J:0 F:0
+

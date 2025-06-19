@@ -21,6 +21,7 @@ Options:
   --poll <ms>         Override polling interval in milliseconds
   --host <hostname>   Override printer hostname or IP address
   --port <number>     Override printer port
+  --apiport <number>  Override HTTP server port for /status endpoint
 `);
 }
 
@@ -61,6 +62,16 @@ function parseArguments() {
                     i++;
                 } else {
                     console.warn('⚠️ --port flag requires a numeric value');
+                }
+                break;
+            }
+            case '--apiport': {
+                const next = args[i + 1];
+                if (next && !next.startsWith('-')) {
+                    options.apiPortOverride = parseInt(next);
+                    i++;
+                } else {
+                    console.warn('⚠️ --apiport flag requires a numeric value');
                 }
                 break;
             }
@@ -121,10 +132,12 @@ function start() {
         const pollInterval = options.pollOverride || config.POLL_INTERVAL;
         const host = options.hostOverride || config.PRINTER_HOST;
         const port = options.portOverride || config.PRINTER_PORT;
+        const apiPort = options.apiPortOverride || 1337;
+
         const watcher = new PrinterWatcher(host, port, pollInterval);
         watcher.start();
 
-        const server = new PrinterServer(watcher.printer);
+        const server = new PrinterServer(watcher.printer, apiPort);
         server.start();
     });
 }
