@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
 const PrinterWatcher = require('./printerWatcher');
+const PrinterServer = require('./printerServer');
 
 const CONFIG_FILE = path.resolve(__dirname, 'config.json');
 
@@ -122,6 +123,9 @@ function start() {
         const port = options.portOverride || config.PRINTER_PORT;
         const watcher = new PrinterWatcher(host, port, pollInterval);
         watcher.start();
+
+        const server = new PrinterServer(watcher.printer);
+        server.start();
     });
 }
 
