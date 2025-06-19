@@ -1,18 +1,18 @@
-name: Release
+name: Release on Tag
 
 on:
   push:
     tags:
-      - 'v*'
+      - '*'
 
 jobs:
   release:
-    name: Run Release and Upload Binaries
+    name: Create GitHub Release
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -25,14 +25,15 @@ jobs:
       - name: Run release script
         run: npm run release
 
-      - name: Archive binaries
-        run: |
-          mkdir -p release-assets
-          cp ./bin/* release-assets/
+      - name: Get tag name
+        id: get_tag
+        run: echo "tag=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: release-assets/*
+          tag_name: ${{ steps.get_tag.outputs.tag }}
+          name: Release ${{ steps.get_tag.outputs.tag }}
+          files: ./bin/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
