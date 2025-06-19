@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "build": "esbuild src/main.js --bundle --platform=node --outfile=dist/voxelab-cli.js",
-    "release": "npm run build && pkg dist/voxelab-cli.js -c package.json --out-path ./bin"
+    "build": "esbuild src/main.js --bundle --platform=node --outfile=dist/voxelab-cli.js && cp src/config.json dist/",
+    "release": "npm run build && pkg dist/voxelab-cli.js -c package.json "
   },
   "devDependencies": {
     "@yao-pkg/pkg": "^6.5.1",
@@ -9,9 +9,12 @@
   },
   "pkg": {
     "scripts": "dist/**/*.js",
-    "targets": [
-      "node14-linux-x64"
+    "assets": [
+      "dist/config.json"
     ],
-    "outputPath": "dist"
+    "targets": [
+      "node18-linux-x64"
+    ],
+    "outputPath": "bin"
   }
 }

@@ -1,4 +1,4 @@
-config.json
+
 # Node modules
 node_modules/
 
@@ -16,8 +16,7 @@ yarn-error.log*
 .DS_Store
 Thumbs.db
 
-# Config files (optional: if user-specific)
-config.json
+
 
 # Optional editor settings
 .vscode/
