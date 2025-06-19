@@ -1,10 +1,9 @@
-# 🖨️ Printer Watcher
+# voxelabs-aries-command-line
 
-Printer Watcher is a Node.js-based tool for monitoring the status of a network-connected 3D printer. It connects to the printer via TCP, parses its responses, and serves real-time status data via a simple HTTP interface.
+voxelabs-aries-command-line is a command-line tool that connects to a networked voxelabs 3D printer, and serves real-time status data via a simple HTTP interface.
 
 ## Features
 
-- Connects to a networked 3D printer using a custom command protocol.
 - Polls for temperature, print progress, endstop status, and more.
 - Serves a JSON API at `/status`.
 - Provides a web-based interface at `/` with a live-updating table.
@@ -12,8 +11,10 @@ Printer Watcher is a Node.js-based tool for monitoring the status of a network-c
 - Auto-generates a config file on first run.
 
 ## Installation
+go to relase page and download the latest release for your platform.
+and run.
 
-```bash
-git clone https://github.com/yourname/printer-watcher.git
-cd printer-watcher
-npm install
+When running go to http://localhost:1337/ to see the live data. or http://localhost:1337/status to see the json data.
+
+## Still in beta!
+For now thi project will only report a few stats, working on more features, incuting ability to submit prints!
