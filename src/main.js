@@ -6,7 +6,8 @@ const PrinterWatcher = require('./printerWatcher');
 const PrinterServer = require('./printerServer');
 const ArgumentManager = require('./argumentManager');
 
-const CONFIG_FILE = path.resolve(__dirname, 'config.json');
+// const CONFIG_FILE = path.resolve(__dirname, 'config.json');
+const CONFIG_FILE = path.join(process.cwd(), 'config.json');
 
 function loadOrCreateConfig(callback) {
     let config = {};
