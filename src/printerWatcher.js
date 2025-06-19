@@ -7,6 +7,13 @@ const Printer = require('./printer');
 const CMD_GET_TEMP = '~M105\n';
 const CMD_GET_PRINT_STATUS = '~M27\n';
 const CMD_GET_ENDSTOP_STATUS = '~M119\n';
+
+const COMMAND_NAMES = {
+    [CMD_GET_TEMP]: 'GET_TEMP',
+    [CMD_GET_PRINT_STATUS]: 'GET_PRINT_STATUS',
+    [CMD_GET_ENDSTOP_STATUS]: 'GET_ENDSTOP_STATUS'
+};
+
 const POLL_COMMANDS = [CMD_GET_TEMP, CMD_GET_PRINT_STATUS, CMD_GET_ENDSTOP_STATUS];
 
 const RESPONSE_TEMP_PREFIX = 'T0:';
@@ -27,6 +34,8 @@ class PrinterWatcher {
         this.client = null;
         this.printer = new Printer();
         this.logPath = path.resolve(logFile);
+        this.commandTimeout = null;
+        this.commandTimeoutDuration = 5000; // 5 seconds
     }
 
     start() {
@@ -57,12 +66,23 @@ class PrinterWatcher {
     }
 
     sendCommand(command) {
+        const commandName = COMMAND_NAMES[command] || 'UNKNOWN_COMMAND';
         if (this.client && !this.client.destroyed) {
-            if (!this.silent) console.log(`📤 Sending: ${command.trim()}`);
+            if (!this.silent) console.log(`📤 Sending: ${commandName}`);
             this.client.write(command);
+            this.startCommandTimeout(commandName);
         } else {
             console.warn('⚠️ Cannot send command, client not connected');
         }
+    }
+
+    startCommandTimeout(commandName) {
+        if (this.commandTimeout) {
+            clearTimeout(this.commandTimeout);
+        }
+        this.commandTimeout = setTimeout(() => {
+            console.warn(`⚠️ No response for command: ${commandName} within ${this.commandTimeoutDuration}ms`);
+        }, this.commandTimeoutDuration);
     }
 
     handleData(data) {
@@ -71,6 +91,11 @@ class PrinterWatcher {
         while (this.buffer.includes('ok')) {
             const [response, remaining] = this.buffer.split('ok', 2);
             this.buffer = remaining;
+
+            if (this.commandTimeout) {
+                clearTimeout(this.commandTimeout);
+                this.commandTimeout = null;
+            }
 
             const cleanResponse = response.trim();
             this.logRawResponse(cleanResponse);

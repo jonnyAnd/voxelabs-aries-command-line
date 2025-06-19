@@ -370,3 +370,45 @@ T0:244 /245 B:85/85
 [2025-06-19T01:29:11.679Z] CMD M105 Received.
 T0:244 /245 B:84/85
 
+[2025-06-19T01:34:00.839Z] CMD M105 Received.
+T0:245 /245 B:84/85
+
+[2025-06-19T01:34:05.860Z] CMD M27 Received.
+SD printing byte 72/100
+
+[2025-06-19T01:34:10.879Z] CMD M119 Received.
+Endstop: X-max:0 Y-max:0 Z-max:0
+MachineStatus: BUILDING_FROM_SD
+MoveMode: MOVING
+Status: S:0 L:0 J:0 F:0
+
+[2025-06-19T01:39:19.137Z] CMD M105 Received.
+T0:244 /245 B:85/85
+
+[2025-06-19T01:39:24.225Z] CMD M27 Received.
+SD printing byte 74/100
+
+[2025-06-19T01:39:29.255Z] CMD M119 Received.
+Endstop: X-max:0 Y-max:0 Z-max:0
+MachineStatus: BUILDING_FROM_SD
+MoveMode: MOVING
+Status: S:0 L:0 J:0 F:0
+
+[2025-06-19T01:39:34.259Z] CMD M105 Received.
+T0:244 /245 B:84/85
+
+[2025-06-19T01:39:39.277Z] CMD M27 Received.
+SD printing byte 74/100
+
+[2025-06-19T01:39:44.295Z] CMD M119 Received.
+Endstop: X-max:0 Y-max:0 Z-max:0
+MachineStatus: BUILDING_FROM_SD
+MoveMode: MOVING
+Status: S:0 L:0 J:0 F:0
+
+[2025-06-19T01:39:49.312Z] CMD M105 Received.
+T0:244 /245 B:84/85
+
+[2025-06-19T01:39:54.329Z] CMD M27 Received.
+SD printing byte 74/100
+
