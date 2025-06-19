@@ -226,3 +226,18 @@ Status: S:0 L:0 J:0 F:0
 [2025-06-19T00:39:20.640Z] CMD M105 Received.
 T0:244 /245 B:84/85
 
+[2025-06-19T00:53:00.991Z] CMD M105 Received.
+T0:244 /245 B:85/85
+
+[2025-06-19T00:54:58.425Z] CMD M105 Received.
+T0:244 /245 B:85/85
+
+[2025-06-19T00:54:59.449Z] CMD M27 Received.
+SD printing byte 54/100
+
+[2025-06-19T00:55:00.473Z] CMD M119 Received.
+Endstop: X-max:0 Y-max:0 Z-max:0
+MachineStatus: BUILDING_FROM_SD
+MoveMode: MOVING
+Status: S:0 L:0 J:0 F:0
+
