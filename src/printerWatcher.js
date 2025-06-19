@@ -1,6 +1,6 @@
 // printerWatcher.js
 const net = require('net');
-const fs = require('fs');
+// const fs = require('fs');
 const path = require('path');
 const Printer = require('./printer');
 
@@ -98,7 +98,7 @@ class PrinterWatcher {
             }
 
             const cleanResponse = response.trim();
-            this.logRawResponse(cleanResponse);
+            // this.logRawResponse(cleanResponse);
 
             const parsed = this.parseResponse(cleanResponse);
             this.printer.updateFromParsedData(parsed);
@@ -106,13 +106,13 @@ class PrinterWatcher {
         }
     }
 
-    logRawResponse(raw) {
-        const timestamp = new Date().toISOString();
-        const entry = `[${timestamp}] ${raw}\n\n`;
-        fs.appendFile(this.logPath, entry, err => {
-            if (err) console.error('⚠️ Failed to write to log:', err.message);
-        });
-    }
+    // logRawResponse(raw) {
+    //     const timestamp = new Date().toISOString();
+    //     const entry = `[${timestamp}] ${raw}\n\n`;
+    //     fs.appendFile(this.logPath, entry, err => {
+    //         if (err) console.error('⚠️ Failed to write to log:', err.message);
+    //     });
+    // }
 
     parseResponse(raw) {
         const lines = raw.split('\n').map(line => line.trim()).filter(Boolean);
