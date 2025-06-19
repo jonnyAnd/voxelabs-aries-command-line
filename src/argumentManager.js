@@ -1,7 +1,21 @@
 // argumentManager.js
 class ArgumentManager {
+    static FLAG_HELP = '-h';
+    static FLAG_POLL = '--poll';
+    static FLAG_HOST = '--host';
+    static FLAG_PORT = '--port';
+    static FLAG_API_PORT = '--apiport';
+    static FLAG_SILENT = '--silent';
+
     constructor() {
-        this.VALID_FLAGS = ['-h', '--poll', '--host', '--port', '--apiport', '--silent'];
+        this.VALID_FLAGS = [
+            ArgumentManager.FLAG_HELP,
+            ArgumentManager.FLAG_POLL,
+            ArgumentManager.FLAG_HOST,
+            ArgumentManager.FLAG_PORT,
+            ArgumentManager.FLAG_API_PORT,
+            ArgumentManager.FLAG_SILENT
+        ];
     }
 
     printHelp() {
@@ -35,10 +49,10 @@ Options:
                 process.exit(1);
             }
             switch (arg) {
-                case '-h':
+                case ArgumentManager.FLAG_HELP:
                     options.help = true;
                     break;
-                case '--poll': {
+                case ArgumentManager.FLAG_POLL: {
                     const next = args[i + 1];
                     if (next && !next.startsWith('-')) {
                         options.pollOverride = parseInt(next);
@@ -48,7 +62,7 @@ Options:
                     }
                     break;
                 }
-                case '--host': {
+                case ArgumentManager.FLAG_HOST: {
                     const next = args[i + 1];
                     if (next && !next.startsWith('-')) {
                         options.hostOverride = next.trim();
@@ -58,7 +72,7 @@ Options:
                     }
                     break;
                 }
-                case '--port': {
+                case ArgumentManager.FLAG_PORT: {
                     const next = args[i + 1];
                     if (next && !next.startsWith('-')) {
                         options.portOverride = parseInt(next);
@@ -68,7 +82,7 @@ Options:
                     }
                     break;
                 }
-                case '--apiport': {
+                case ArgumentManager.FLAG_API_PORT: {
                     const next = args[i + 1];
                     if (next && !next.startsWith('-')) {
                         options.apiPortOverride = parseInt(next);
@@ -78,7 +92,7 @@ Options:
                     }
                     break;
                 }
-                case '--silent': {
+                case ArgumentManager.FLAG_SILENT: {
                     options.silent = true;
                     break;
                 }
