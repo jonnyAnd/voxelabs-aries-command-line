@@ -37,8 +37,15 @@ class PrinterWatcher {
         });
 
         this.client.on('data', data => this.handleData(data));
-        this.client.on('error', err => console.error('❌ Connection error:', err.message));
-        this.client.on('close', () => console.log('🔌 Connection closed'));
+
+        this.client.on('error', err => {
+            console.error('❌ Failed to connect to printer:', err.message);
+            process.exit(1);
+        });
+
+        this.client.on('close', () => {
+            if (!this.silent) console.log('🔌 Connection closed');
+        });
     }
 
     startPolling() {
