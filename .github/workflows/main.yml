@@ -1,28 +1,58 @@
-name: Release
+name: Auto Release
 
 on:
   push:
     branches:
-      - main  # Change to your default branch if needed
-    tags:
-      - 'v*'  # Optional: triggers only on version tags like v1.0.0
+      - main
 
 jobs:
   release:
-    name: Run Release and Upload Binaries
+    name: Auto-tag, Run Release, and Upload Binaries
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Needed to get tags
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'  # Adjust version as needed
+          node-version: '20'
 
       - name: Install dependencies
         run: npm install
+
+      - name: Get latest tag
+        id: get_tag
+        run: |
+          git fetch --tags
+          latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+          echo "Latest tag: $latest_tag"
+          if [ -z "$latest_tag" ]; then
+            echo "tag=v0.0.0" >> $GITHUB_OUTPUT
+          else
+            echo "tag=$latest_tag" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Bump tag version
+        id: bump_tag
+        run: |
+          tag=${{ steps.get_tag.outputs.tag }}
+          version=${tag#v}
+          IFS='.' read -r major minor patch <<< "$version"
+          patch=$((patch + 1))
+          new_tag="v$major.$minor.$patch"
+          echo "New tag: $new_tag"
+          echo "new_tag=$new_tag" >> $GITHUB_OUTPUT
+
+      - name: Create and push new tag
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git tag ${{ steps.bump_tag.outputs.new_tag }}
+          git push origin ${{ steps.bump_tag.outputs.new_tag }}
 
       - name: Run release script
         run: npm run release
@@ -35,6 +65,8 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ steps.bump_tag.outputs.new_tag }}
+          name: Release ${{ steps.bump_tag.outputs.new_tag }}
           files: release-assets/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
