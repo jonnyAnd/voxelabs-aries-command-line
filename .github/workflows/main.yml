@@ -1,0 +1,40 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main  # Change to your default branch if needed
+    tags:
+      - 'v*'  # Optional: triggers only on version tags like v1.0.0
+
+jobs:
+  release:
+    name: Run Release and Upload Binaries
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'  # Adjust version as needed
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run release script
+        run: npm run release
+
+      - name: Archive binaries
+        run: |
+          mkdir -p release-assets
+          cp ./bin/* release-assets/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release-assets/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
